@@ -44,7 +44,7 @@ class Predictor:
         '''
         Initialize the Predictor class
         '''
-        self.model_tag = model_tag
+        self.model_tag = "nitrosocke/Ghibli-Diffusion"
 
     def setup(self):
         '''
