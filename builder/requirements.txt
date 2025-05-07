@@ -11,3 +11,4 @@ transformers
 accelerate
 xformers
 triton
+google-cloud-storage

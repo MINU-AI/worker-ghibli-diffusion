@@ -12,6 +12,7 @@ from runpod.serverless.utils import rp_download, rp_cleanup
 
 from rp_schema import INPUT_SCHEMA
 
+from google.cloud import storage
 
 def upload_or_base64_encode(file_name, img_path):
     """
@@ -23,6 +24,24 @@ def upload_or_base64_encode(file_name, img_path):
     with open(img_path, "rb") as image_file:
         encoded_string = base64.b64encode(image_file.read())
         return encoded_string.decode("utf-8")
+
+def upload_file_to_gcs(file_path, destination_blob_name):
+    service_account_json = "/upload_file_key.json"
+    bucket_name = "swap_video"
+    # Initialize the storage client
+    storage_client = storage.Client.from_service_account_json(service_account_json)
+
+    bucket = storage_client.bucket(bucket_name, user_project="melofi-e4f24")
+    blob = bucket.blob(destination_blob_name)
+
+    # Upload the file
+    blob.upload_from_filename(file_path)
+
+    # Make the blob publicly viewable (optional)
+    blob.make_public()
+
+    public_url = blob.public_url
+    return public_url
 
 
 def run(job):
@@ -70,8 +89,8 @@ def run(job):
 
     job_output = []
     for index, img_path in enumerate(img_paths):
-        file_name = f"{job['id']}_{index}.png"
-        image_return = upload_or_base64_encode(file_name, img_path)
+        destination_blob_name = os.path.basename(img_path)
+        image_return =  upload_file_to_gcs(img_path, destination_blob_name)
 
         job_output.append({
             "image": image_return,
