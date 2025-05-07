@@ -60,7 +60,7 @@ def run(job):
         mask=validated_input['mask'],
         prompt_strength=validated_input['prompt_strength'],
         num_outputs=validated_input.get('num_outputs', 1),
-        num_inference_steps=validated_input.get('num_inference_steps', 50),
+        num_inference_steps=validated_input.get('num_inference_steps', 30),
         guidance_scale=validated_input['guidance_scale'],
         scheduler=validated_input.get('scheduler', "K-LMS"),
         lora=validated_input.get("lora", None),
@@ -86,7 +86,7 @@ def run(job):
 
 # Grab args
 parser = argparse.ArgumentParser()
-parser.add_argument('--model_tag', type=str, default="runwayml/stable-diffusion-v1-5")
+parser.add_argument('--model_tag', type=str, default="nitrosocke/Ghibli-Diffusion")
 
 if __name__ == "__main__":
     args = parser.parse_args()
