@@ -13,6 +13,7 @@ from runpod.serverless.utils import rp_download, rp_cleanup
 from rp_schema import INPUT_SCHEMA
 
 from google.cloud import storage
+import uuid
 
 def upload_or_base64_encode(file_name, img_path):
     """
@@ -89,7 +90,7 @@ def run(job):
 
     job_output = []
     for index, img_path in enumerate(img_paths):
-        destination_blob_name = os.path.basename(img_path)
+        destination_blob_name = f"{uuid.uuid4().hex}.png"
         image_return =  upload_file_to_gcs(img_path, destination_blob_name)
 
         job_output.append({
