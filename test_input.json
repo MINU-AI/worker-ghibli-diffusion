@@ -1,0 +1,11 @@
+{
+    "input": {
+        "prompt": "Studio Ghibli style, highly detailed anime painting, dreamy atmosphere, soft natural lighting, lush greenery, hand-painted watercolor textures, fantasy landscape, whimsical setting",
+        "width": 1024,
+        "height": 768,
+        "num_inference_steps": 50,
+        "init_image": "https://drive.usercontent.google.com/download?id=1lrx051SsCEkv3QAwFDSOoYZRmEdDrxzM&export=download&authuser=0&confirm=t&uuid=cdcd743e-499b-4808-9fea-41a850c2fa4c&at=ALoNOgl0Gt0YwxhW1z2G716CPWRC:1746673012804",
+        "prompt_strength": 0.5,
+        "negative_prompt": "realistic, photo, blurry, deformed, 3D render, CGI, disfigured, low detail"
+    }
+}

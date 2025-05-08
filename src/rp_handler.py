@@ -45,6 +45,18 @@ def upload_file_to_gcs(file_path, destination_blob_name):
     return public_url
 
 
+
+def download_image(url, save_path):
+    import requests
+    response = requests.get(url)
+    if response.status_code == 200:
+        with open(save_path, "wb") as f:
+            f.write(response.content)
+        print(f"Image saved to {save_path}")
+    else:
+        print(f"Failed to download image: {response.status_code}")
+        raise RuntimeError(f"Failed to download image: {response.status_code}")
+
 def run(job):
     '''
     Run inference on the model.
@@ -60,11 +72,24 @@ def run(job):
     validated_input = validated_input['validated_input']
 
     # Download input objects
-    validated_input['init_image'], validated_input['mask'] = rp_download.download_files_from_urls(
-        job['id'],
-        [validated_input.get('init_image', None), validated_input.get(
-            'mask', None)]
-    )  # pylint: disable=unbalanced-tuple-unpacking
+    # validated_input['init_image'], validated_input['mask'] = rp_download.download_files_from_urls(
+    #     job['id'],
+    #     [validated_input.get('init_image', None), validated_input.get(
+    #         'mask', None)]
+    # )
+
+    init_image = validated_input.get("init_image")
+    if init_image is not None:
+        try:
+            download_folder = "downloads"
+            os.makedirs(download_folder, exist_ok=True)            
+            save_path = os.path.join(download_folder, f"{uuid.uuid4().hex}.jpg")
+            download_image(init_image, save_path)
+            validated_input["init_image"] = save_path
+        except Exception as e:
+            return {
+                "error" : f"{e}"
+            }
 
     MODEL.NSFW = validated_input.get('nsfw', True)
 
