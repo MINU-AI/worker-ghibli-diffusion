@@ -119,7 +119,7 @@ class Predictor:
             init_image = Image.open(init_image).convert("RGB")
             print(f"Got init_image: {init_image}")
             extra_kwargs = {
-                "init_image": init_image,
+                "image": init_image,
                 "strength": prompt_strength,
             }
         else:
