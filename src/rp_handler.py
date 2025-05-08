@@ -72,24 +72,11 @@ def run(job):
     validated_input = validated_input['validated_input']
 
     # Download input objects
-    # validated_input['init_image'], validated_input['mask'] = rp_download.download_files_from_urls(
-    #     job['id'],
-    #     [validated_input.get('init_image', None), validated_input.get(
-    #         'mask', None)]
-    # )
-
-    init_image = validated_input.get("init_image")
-    if init_image is not None:
-        try:
-            download_folder = "downloads"
-            os.makedirs(download_folder, exist_ok=True)            
-            save_path = os.path.join(download_folder, f"{uuid.uuid4().hex}.jpg")
-            download_image(init_image, save_path)
-            validated_input["init_image"] = save_path
-        except Exception as e:
-            return {
-                "error" : f"{e}"
-            }
+    validated_input['init_image'], validated_input['mask'] = rp_download.download_files_from_urls(
+        job['id'],
+        [validated_input.get('init_image', None), validated_input.get(
+            'mask', None)]
+    )
 
     MODEL.NSFW = validated_input.get('nsfw', True)
 
